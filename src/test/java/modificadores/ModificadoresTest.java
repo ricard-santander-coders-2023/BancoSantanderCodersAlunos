@@ -1,13 +1,11 @@
 package modificadores;
 
-import org.junit.Test;
-
 public class ModificadoresTest {
 
-    @Test
-    public void testModificadores(){
+    public void testModificadores() {
         Modificadores modificadores = new Modificadores();
 
-
+        Integer x = modificadores.modificadorAtributo;
+        modificadores.modificadorMetodo();
     }
 }

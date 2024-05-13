@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ContaTest {
+    
+    // Outra forma de testar exceptions (EXTRA) - @Rule
 
     @Test
     public void deveLancarExceptionCasoValorSolicitadoSejaMaiorQueValorDisponivel() {
@@ -31,13 +33,13 @@ public class ContaTest {
         conta1.removerSaldoParaEmprestimo(100.0);
     }
 
-    @Test
+    @Test // Junit 4.13^
     public void deveLancarExceptionCasoValorSolicitadoSejaMaiorQueValorDisponivel_3() {
         Cliente cliente1 = new Cliente("Ana", "123.123.123-12");
         Conta conta1 = new Conta("1", cliente1);
 
         Throwable throwable = Assert.assertThrows(SaldoInvalidoException.class, () -> conta1.removerSaldoParaEmprestimo(100.0));
-        // Assert.assertEquals("Saldo para emprestimo inferior ao solicitado", throwable.getMessage());
+         Assert.assertEquals("Saldo para emprestimo inferior ao solicitado", throwable.getMessage());
     }
 
 }

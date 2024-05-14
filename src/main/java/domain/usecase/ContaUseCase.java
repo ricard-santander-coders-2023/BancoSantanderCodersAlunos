@@ -1,5 +1,6 @@
 package domain.usecase;
 
+import domain.exception.SaldoInvalidoException;
 import domain.gateway.ContaGateway;
 import domain.model.Conta;
 
@@ -44,6 +45,8 @@ public class ContaUseCase {
     public void emprestimo(String idConta, Double valor) throws Exception {
         Conta conta = contaGateway.findById(idConta);
         if (conta == null) throw new Exception("Conta invalida - [id: " + idConta + "]");
+
+        if(conta.getSaldoDisponivelParaEmprestimo() < valor) throw new SaldoInvalidoException("Saldo para emprestimo insuficiente!");
 
         if (conta.getSaldoDisponivelParaEmprestimo() >= valor) {
             conta.removerSaldoParaEmprestimo(valor);

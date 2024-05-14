@@ -1,11 +1,14 @@
 package usecase;
 
+import domain.exception.SaldoInvalidoException;
 import domain.gateway.ContaGateway;
 import domain.model.Cliente;
 import domain.model.Conta;
 import domain.usecase.ContaUseCase;
 import infra.gateway.ContaGatewayLocal;
 import org.junit.*;
+
+import java.util.Optional;
 
 public class ContaUseCaseTest {
 
@@ -114,12 +117,29 @@ public class ContaUseCaseTest {
     }
 
     @Test
-    public void testarEmprestimoEntreContas() throws Exception {
+    public void testarEmprestimoComSaldoInsuficiente() throws Exception {
         Cliente clienteNovo = new Cliente("Poucos mas Muito Loucos", "666.666.666-69");
         Conta contaNova = new Conta("69", clienteNovo);
+        contaUseCase.criarConta(contaNova);
 
         contaNova.adicionarSaldoParaEmprestimo(100d);
 
-        Assert.assertThrows(Exception.class, ()-> contaUseCase.emprestimo("69", 300d));
+        Assert.assertThrows(SaldoInvalidoException.class, () -> contaUseCase.emprestimo("69", 300d));
+    }
+
+    @Test
+    public void testarEmprestimoComSaldoBoladao() throws Exception {
+        Cliente clienteNovo = new Cliente("Poucos mas Muito Loucos", "666.666.666-69");
+        Conta contaNova = new Conta("69", clienteNovo);
+        contaUseCase.criarConta(contaNova);
+
+        contaNova.adicionarSaldoParaEmprestimo(200000d);
+        contaUseCase.emprestimo("69", 100000d);
+        Assert.assertEquals(100000d, contaNova.getSaldoDisponivelParaEmprestimo(),0.000001);
+    }
+
+    @Test
+    public void testarEmprestimoContaInvalida() throws Exception {
+        Assert.assertThrows(Exception.class, () -> contaUseCase.emprestimo("32", 300d));
     }
 }

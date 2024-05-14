@@ -48,10 +48,10 @@ public class ContaUseCase {
 
         if(conta.getSaldoDisponivelParaEmprestimo() < valor) throw new SaldoInvalidoException("Saldo para emprestimo insuficiente!");
 
-        if (conta.getSaldoDisponivelParaEmprestimo() >= valor) {
-            conta.removerSaldoParaEmprestimo(valor);
-            conta.depositar(valor);
-        }
+
+        conta.removerSaldoParaEmprestimo(valor);
+        conta.depositar(valor);
+
 
         contaGateway.save(conta);
     }

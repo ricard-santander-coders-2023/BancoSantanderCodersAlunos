@@ -142,4 +142,52 @@ public class ContaUseCaseTest {
     public void testarEmprestimoContaInvalida() throws Exception {
         Assert.assertThrows(Exception.class, () -> contaUseCase.emprestimo("32", 300d));
     }
+
+    ////////////////////////////////////////////////////
+    @Test(expected = Exception.class)
+    public void testTransferirContaOrigemInvalida() throws Exception {
+        contaUseCase.transferir("invalid_id", "2", 100.0);
+    }
+
+    @Test(expected = Exception.class)
+    public void testTransferirContaDestinoInvalida() throws Exception {
+        contaUseCase.transferir("1", "invalid_id", 100.0);
+    }
+
+    @Test
+    public void testaTransferirSemSaldoLancaExcessao() {
+        try {
+            contaUseCase.transferir("1", "2", 1000.0);
+            Assert.fail("Esperado SaldoInvalidoException");
+        } catch (SaldoInvalidoException e) {
+            Assert.assertEquals("Saldo para emprestimo insuficiente!", e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Expected SaldoInvalidoException, but got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test(expected = Exception.class)
+    public void testaEmprestimoContaInvalidaLancaExcessao() throws Exception {
+        contaUseCase.emprestimo("invalid_id", 100.0);
+    }
+
+    @Test
+    public void testaEmprestimoSemSaudoLancaExcessao() {
+        try {
+            contaUseCase.emprestimo("1", 1000.0);
+            Assert.fail("Expected SaldoInvalidoException");
+        } catch (SaldoInvalidoException e) {
+            Assert.assertEquals("Saldo para emprestimo insuficiente!", e.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Expected SaldoInvalidoException, but got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void testaEmprestimoComSucessoEBalancoSuficiente() throws Exception {
+        contaUseCase.emprestimo("2", 100.0);
+        Conta conta = contaGateway.findById("2");
+        Assert.assertEquals(100.0, conta.getSaldo(), 0.000001);
+    }
+
 }

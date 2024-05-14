@@ -1,18 +1,21 @@
 package model;
 
-import exception.SaldoInvalidoException;
+import domain.exception.SaldoInvalidoException;
+import domain.model.Cliente;
+import domain.model.Conta;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ContaTest {
-    
-    // Outra forma de testar exceptions (EXTRA) - @Rule
+
+    // Rules - Outra forma de testar exceptions (Extra) - @Rule
 
     @Test
     public void deveLancarExceptionCasoValorSolicitadoSejaMaiorQueValorDisponivel() {
         // Given
         Cliente cliente1 = new Cliente("Ana", "123.123.123-12");
         Conta conta1 = new Conta("1", cliente1);
+        // Zero disponivel para emprestimo
 
         // When
         try {
@@ -33,13 +36,13 @@ public class ContaTest {
         conta1.removerSaldoParaEmprestimo(100.0);
     }
 
-    @Test // Junit 4.13^
+    @Test
     public void deveLancarExceptionCasoValorSolicitadoSejaMaiorQueValorDisponivel_3() {
         Cliente cliente1 = new Cliente("Ana", "123.123.123-12");
         Conta conta1 = new Conta("1", cliente1);
 
         Throwable throwable = Assert.assertThrows(SaldoInvalidoException.class, () -> conta1.removerSaldoParaEmprestimo(100.0));
-         Assert.assertEquals("Saldo para emprestimo inferior ao solicitado", throwable.getMessage());
+        Assert.assertEquals("Saldo para emprestimo inferior ao solicitado", throwable.getMessage());
     }
 
 }

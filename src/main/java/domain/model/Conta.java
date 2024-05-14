@@ -1,6 +1,6 @@
-package model;
+package domain.model;
 
-import exception.SaldoInvalidoException;
+import domain.exception.SaldoInvalidoException;
 
 public class Conta {
     private String id;
@@ -30,15 +30,13 @@ public class Conta {
     }
 
     public void removerSaldoParaEmprestimo(Double valor) throws Exception {
-
         // Exception
-        if (this.saldoDisponivelParaEmprestimo < valor) {
+        if(this.saldoDisponivelParaEmprestimo < valor) {
             throw new SaldoInvalidoException("Saldo para emprestimo inferior ao solicitado");
         }
 
         this.saldoDisponivelParaEmprestimo -= valor;
     }
-
 
     public String getId() {
         return id;
@@ -54,5 +52,15 @@ public class Conta {
 
     public Double getSaldoDisponivelParaEmprestimo() {
         return saldoDisponivelParaEmprestimo;
+    }
+
+    @Override
+    public String toString() {
+        return "Conta{" +
+                "id='" + id + '\'' +
+                ", cliente=" + cliente +
+                ", saldo=" + saldo +
+                ", saldoDisponivelParaEmprestimo=" + saldoDisponivelParaEmprestimo +
+                '}';
     }
 }

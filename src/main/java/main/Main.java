@@ -11,7 +11,7 @@ import infra.gateway.ContaGatewayLocal;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        ContaGateway contaGateway = new ContaGatewayHttp();
+        ContaGateway contaGateway = new ContaGatewayDB();
         ContaUseCase contaUseCase = new ContaUseCase(contaGateway);
 
         Cliente cliente = new Cliente("Ana", "111.111.111.11");

@@ -2,6 +2,8 @@ package domain.model;
 
 import domain.exception.SaldoInvalidoException;
 
+import java.util.Objects;
+
 public class Conta {
     private String id;
     private Cliente cliente;
@@ -62,5 +64,18 @@ public class Conta {
                 ", saldo=" + saldo +
                 ", saldoDisponivelParaEmprestimo=" + saldoDisponivelParaEmprestimo +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Conta conta = (Conta) o;
+        return Objects.equals(id, conta.id) && Objects.equals(cliente, conta.cliente) && Objects.equals(saldo, conta.saldo) && Objects.equals(saldoDisponivelParaEmprestimo, conta.saldoDisponivelParaEmprestimo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cliente, saldo, saldoDisponivelParaEmprestimo);
     }
 }

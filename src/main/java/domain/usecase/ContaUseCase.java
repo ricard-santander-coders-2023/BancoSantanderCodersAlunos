@@ -1,5 +1,6 @@
 package domain.usecase;
 
+import domain.exception.ContaInvalidaException;
 import domain.exception.SaldoInvalidoException;
 import domain.gateway.ContaGateway;
 import domain.model.Conta;
@@ -20,12 +21,16 @@ public class ContaUseCase {
         return contaGateway.findById(id);
     }
 
-    public void transferir(String idOrigem, String idDestino, Double valor) throws Exception {
+    public void transferir(String idOrigem, String idDestino, Double valor) {
         Conta contaOrigem = contaGateway.findById(idOrigem);
-        if (contaOrigem == null) throw new Exception("Conta origem invalida - [id: " + idOrigem + "]");
+        if (contaOrigem == null) {
+            throw new ContaInvalidaException("Conta origem invalida - [id: " + idOrigem + "]");
+        }
 
         Conta contaDestino = contaGateway.findById(idDestino);
-        if (contaDestino == null) throw new Exception("Conta destino invalida - [id: " + idDestino + "]");
+        if (contaDestino == null) {
+            throw new ContaInvalidaException("Conta destino invalida - [id: " + idDestino + "]");
+        }
 
         contaOrigem.sacar(valor);
         contaDestino.depositar(valor);
